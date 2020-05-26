@@ -1,8 +1,25 @@
-<resources>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="app_name">TryStromful</string>
 
+    <!-- - - - - - - - - - - - - - - -->
+    <!-- Used by StormfulPreferences-->
+    <!-- - - - - - - - - - - - - - - -->
 
-    <!--    Date-->
     <string name="today">Today</string>
     <string name="tomorrow">Tomorrow</string>
+
+
+    <!-- - - - - - - - - - - - - - - -->
+    <!-- Used by StormfulWeatherUtils-->
+    <!-- - - - - - - - - - - - - - - -->
+
+    <!-- Temperature format in Celsius [CHAR LIMIT=5] -->
+    <string name="format_temperature_celsius">
+        <xliff:g id="temp">%1.0f</xliff:g>\u00B0C
+    </string>
+
+    <!-- Temperature format in Fahrenheit [CHAR LIMIT=5] -->
+    <string name="format_temperature_fahrenheit">
+        <xliff:g id="temp">%1.0f</xliff:g>\u00B0F
+    </string>
 </resources>
