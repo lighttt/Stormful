@@ -1,6 +1,10 @@
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="app_name">TryStromful</string>
 
+
+    <string name="error_message">An error occurred! Please try again.</string>
+    <string name="action_refresh">Refresh</string>
+
     <!-- - - - - - - - - - - - - - - -->
     <!-- Used by StormfulPreferences-->
     <!-- - - - - - - - - - - - - - - -->
