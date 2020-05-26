@@ -14,7 +14,7 @@ import android.widget.TextView;
 import com.example.trystromful.data.StormfulPreferences;
 import com.example.trystromful.utilities.NetworkUtils;
 import com.example.trystromful.utilities.OpenWeatherJsonUtils;
-import com.wang.avi.AVLoadingIndicatorView;
+import com.github.ybq.android.spinkit.SpinKitView;
 
 import java.net.URL;
 
@@ -23,7 +23,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView mWeatherTextView;
     private static final String TAG = "MainActivity";
     private TextView mErrorMessageDisplay;
-    private AVLoadingIndicatorView mLoadingIndicator;
+    private SpinKitView mLoadingIndicator;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

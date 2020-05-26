@@ -27,14 +27,15 @@
         android:textSize="20sp"
         android:visibility="invisible" />
 
-    <com.wang.avi.AVLoadingIndicatorView
+
+    <com.github.ybq.android.spinkit.SpinKitView
         android:id="@+id/pb_loading_indicator"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        style="@style/SpinKitView.FoldingCube"
+        android:padding="10dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_gravity="center"
-        style="@style/AVLoadingIndicatorView"
-        app:indicatorName="LineScaleIndicator"
-        app:indicatorColor="@color/colorPrimary"
-        android:visibility="invisible" />
+        android:visibility="visible"
+        app:SpinKit_Color="@color/colorPrimary"/>
 
 </FrameLayout>
