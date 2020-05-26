@@ -10,7 +10,7 @@ import java.net.HttpURLConnection;
 
 public class OpenWeatherJsonUtils {
 
-    public static  String[] getSimpleWeatherStringsFromJson(Context context, String forecastJsonStr) throws JSONException {
+    public static  String[] getParsedJsonWeatherData(Context context, String forecastJsonStr) throws JSONException {
         /*each day weather forecast is on the list*/
         final String OWM_LIST = "list";
 
@@ -18,8 +18,8 @@ public class OpenWeatherJsonUtils {
         final String OWM_TEMPERATURE = "temp";
 
         /* max min temp for day*/
-        final String OWM_MAX = "max";
-        final String OWM_MIN = "min";
+        final String OWM_MAX = "temp_max";
+        final String OWM_MIN = "temp_min";
 
         final String OWM_WEATHER = "weather";
         final String OWM_DESCRIPTION = "main";
@@ -74,9 +74,9 @@ public class OpenWeatherJsonUtils {
                     dayForecast.getJSONArray(OWM_WEATHER).getJSONObject(0);
             description = weatherObject.getString(OWM_DESCRIPTION);
 
-            JSONObject temperatureObject = dayForecast.getJSONObject(OWM_TEMPERATURE);
-            high = temperatureObject.getDouble(OWM_MAX);
-            low = temperatureObject.getDouble(OWM_MIN);
+            JSONObject mainObject = dayForecast.getJSONObject(OWM_DESCRIPTION);
+            high = mainObject.getDouble(OWM_MAX);
+            low = mainObject.getDouble(OWM_MIN);
             highAndLow = StormfulWeatherUtils.formatHighLows(context, high, low);
 
             parsedWeatherData[i] = date + " - " + description + " - " + highAndLow;
