@@ -1,0 +1,2 @@
+rootProject.name='TryStromful'
+include ':app'
