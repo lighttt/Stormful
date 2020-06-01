@@ -2,6 +2,8 @@ package com.example.trystromful;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -10,6 +12,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.trystromful.data.StormfulPreferences;
 import com.example.trystromful.utilities.NetworkUtils;
@@ -18,24 +21,35 @@ import com.github.ybq.android.spinkit.SpinKitView;
 
 import java.net.URL;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements ForecastAdapter.ForecastAdapterOnClickHandler {
 
-    private TextView mWeatherTextView;
+    private RecyclerView mRecyclerView;
     private static final String TAG = "MainActivity";
     private TextView mErrorMessageDisplay;
     private SpinKitView mLoadingIndicator;
+    private ForecastAdapter mForecastAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_forecast);
-        mWeatherTextView = findViewById(R.id.tv_weather_data);
+        mRecyclerView = findViewById(R.id.recyclerview_forecast);
         mErrorMessageDisplay = findViewById(R.id.tv_error_message_display);
         mLoadingIndicator = findViewById(R.id.pb_loading_indicator);
+
+        //layout manager
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false);
+        mRecyclerView.setLayoutManager(layoutManager);
+        mRecyclerView.setHasFixedSize(true);
+
+        mForecastAdapter = new ForecastAdapter(this);
+        mRecyclerView.setAdapter(mForecastAdapter);
+
         loadWeatherData();
     }
 
     private void loadWeatherData(){
+        showWeatherDataView();
         String location = StormfulPreferences.getPreferredWeatherLocation(this);
         new FetchWeatherTask().execute(location);
     }
@@ -44,14 +58,19 @@ public class MainActivity extends AppCompatActivity {
         /* First, make sure the error is invisible */
         mErrorMessageDisplay.setVisibility(View.INVISIBLE);
         /* Then, make sure the weather data is visible */
-        mWeatherTextView.setVisibility(View.VISIBLE);
+        mRecyclerView.setVisibility(View.VISIBLE);
     }
 
     private void showErrorMessage() {
         /* First, hide the currently visible data */
-        mWeatherTextView.setVisibility(View.INVISIBLE);
+        mRecyclerView.setVisibility(View.INVISIBLE);
         /* Then, show the error */
         mErrorMessageDisplay.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void onClick(String weatherForDay) {
+        Toast.makeText(this, weatherForDay, Toast.LENGTH_SHORT).show();
     }
 
     public class FetchWeatherTask extends AsyncTask<String,Void,String[]>{
@@ -86,9 +105,8 @@ public class MainActivity extends AppCompatActivity {
         protected void onPostExecute(String[] weatherData) {
             mLoadingIndicator.setVisibility(View.INVISIBLE);
             if (weatherData != null) {
-                for (String weatherString : weatherData) {
-                    mWeatherTextView.append((weatherString) + "\n\n\n");
-                }
+                showWeatherDataView();
+                mForecastAdapter.setWeatherData(weatherData);
             }
             else{
                 showErrorMessage();
@@ -111,7 +129,7 @@ public class MainActivity extends AppCompatActivity {
        int id = item.getItemId();
        if(id == R.id.action_refresh)
        {
-           mWeatherTextView.setText("");
+           mForecastAdapter.setWeatherData(null);
            loadWeatherData();
            return  true;
        }
