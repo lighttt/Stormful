@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -138,6 +139,29 @@ public class MainActivity extends AppCompatActivity implements ForecastAdapter.F
            loadWeatherData();
            return  true;
        }
+        if (id == R.id.action_map) {
+            openLocationInMap();
+            return true;
+        }
        return super.onOptionsItemSelected(item);
+    }
+
+    /*
+     *  ----------------------  Location Intent --------------------------
+     * */
+
+    private void openLocationInMap() {
+        String addressString = StormfulPreferences.getPreferredWeatherLocation(context);
+        Uri geoLocation = Uri.parse("geo:0,0?q=" + addressString);
+
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.setData(geoLocation);
+
+        if (intent.resolveActivity(getPackageManager()) != null) {
+            startActivity(intent);
+        } else {
+            Log.e(TAG, "Couldn't call " + geoLocation.toString()
+                    + ", no receiving apps installed!");
+        }
     }
 }

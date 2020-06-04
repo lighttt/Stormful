@@ -7,7 +7,7 @@ public class StormfulPreferences {
     private static final String PREF_CITY_NAME = "Kathmandu";
 
 
-    private static final String DEFAULT_WEATHER_LOCATION = "Kathmandu,Nepal";
+    private static final String DEFAULT_WEATHER_LOCATION = "Kathmandu, Nepal";
     private static final double[] DEFAULT_WEATHER_COORDINATES = {27.7172, 85.3240};
 
     public static boolean isMetric(Context context) {

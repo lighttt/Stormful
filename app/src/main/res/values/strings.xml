@@ -26,4 +26,6 @@
     <string name="format_temperature_fahrenheit">
         <xliff:g id="temp">%1.0f</xliff:g>\u00B0F
     </string>
+    <string name="action_share">Share</string>
+    <string name="action_map">Map Location</string>
 </resources>
