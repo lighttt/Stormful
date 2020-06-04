@@ -5,6 +5,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -28,6 +30,7 @@ public class MainActivity extends AppCompatActivity implements ForecastAdapter.F
     private TextView mErrorMessageDisplay;
     private SpinKitView mLoadingIndicator;
     private ForecastAdapter mForecastAdapter;
+    private Context context = MainActivity.this;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,7 +73,9 @@ public class MainActivity extends AppCompatActivity implements ForecastAdapter.F
 
     @Override
     public void onClick(String weatherForDay) {
-        Toast.makeText(this, weatherForDay, Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(context,DetailActivity.class);
+        intent.putExtra(Intent.EXTRA_TEXT,weatherForDay);
+        startActivity(intent);
     }
 
     public class FetchWeatherTask extends AsyncTask<String,Void,String[]>{
