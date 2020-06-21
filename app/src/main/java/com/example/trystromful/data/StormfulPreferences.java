@@ -1,6 +1,11 @@
 package com.example.trystromful.data;
 
 import android.content.Context;
+import android.content.SharedPreferences;
+
+import androidx.preference.PreferenceManager;
+
+import com.example.trystromful.R;
 
 public class StormfulPreferences {
 
@@ -15,7 +20,11 @@ public class StormfulPreferences {
     }
 
     public static String getPreferredWeatherLocation(Context context) {
-        return getDefaultWeatherLocation();
+        SharedPreferences prefs = PreferenceManager
+                .getDefaultSharedPreferences(context);
+        String keyForLocation = context.getString(R.string.pref_location_key);
+        String defaultLocation = context.getString(R.string.pref_location_default);
+        return prefs.getString(keyForLocation, defaultLocation);
     }
 
     private static String getDefaultWeatherLocation() {
