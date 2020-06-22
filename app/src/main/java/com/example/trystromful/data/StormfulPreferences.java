@@ -16,7 +16,19 @@ public class StormfulPreferences {
     private static final double[] DEFAULT_WEATHER_COORDINATES = {27.7172, 85.3240};
 
     public static boolean isMetric(Context context) {
-        return true;
+        SharedPreferences prefs = PreferenceManager
+                .getDefaultSharedPreferences(context);
+        String keyForUnits = context.getString(R.string.pref_units_key);
+        String defaultUnits = context.getString(R.string.pref_units_metric);
+        String preferredUnits = prefs.getString(keyForUnits, defaultUnits);
+        String metric = context.getString(R.string.pref_units_metric);
+        boolean userPrefersMetric;
+        if (metric.equals(preferredUnits)) {
+            userPrefersMetric = true;
+        } else {
+            userPrefersMetric = false;
+        }
+        return userPrefersMetric;
     }
 
     public static String getPreferredWeatherLocation(Context context) {
