@@ -46,6 +46,20 @@ public class StormfulDateUtils {
     }
 
     /**
+     * Check if the dates are normalized or not so that they can be inserted into
+     * WeatherProvider or database
+     */
+    public static boolean isDateNormalized(long milliSecondEpoch)
+    {
+        boolean isDateNormalized = false;
+        if(milliSecondEpoch % DAY_IN_MILLIS == 0)
+        {
+            isDateNormalized = true;
+        }
+        return isDateNormalized;
+    }
+
+    /**
      * Since all dates from the database are in UTC, we must convert the given date
      * (in UTC timezone) to the date in the local timezone. Ths function performs that conversion
      * using the TimeZone offset.
