@@ -19,11 +19,15 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".SettingsActivity"
-            android:parentActivityName=".MainActivity" />
+            android:name=".SettingsActivity" />
         <activity
-            android:name=".DetailActivity"
-            android:parentActivityName=".MainActivity" />
+            android:name=".DetailActivity" />
+
+
+        <provider
+            android:name=".data.WeatherProvider"
+            android:authorities="@string/content_authority"
+            android:exported="false"/>
 
     </application>
 
