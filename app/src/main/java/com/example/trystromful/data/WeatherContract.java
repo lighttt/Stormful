@@ -29,6 +29,11 @@ public class WeatherContract {
                     .build();
         }
 
+        public static String getSqlSelectForTodayOnwards(){
+            long normalizeUTCNow = StormfulDateUtils.normalizeDate(System.currentTimeMillis());
+            return WeatherEntry.COLUMN_DATE + " >= " + normalizeUTCNow;
+        }
+
         //table name
         public static final String TABLE_NAME = "weather";
         public static final String COLUMN_DATE = "date";

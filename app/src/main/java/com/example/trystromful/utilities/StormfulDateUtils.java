@@ -7,6 +7,7 @@ import com.example.trystromful.R;
 
 import java.text.SimpleDateFormat;
 import java.util.TimeZone;
+import java.util.concurrent.TimeUnit;
 
 public class StormfulDateUtils {
 
@@ -57,6 +58,27 @@ public class StormfulDateUtils {
             isDateNormalized = true;
         }
         return isDateNormalized;
+    }
+
+    /**
+     * Get Normalized UTC Date for Today
+     *
+     */
+    public static long getNormalizedUTCDateForToday()
+    {
+        //ahile ko utc time in millis
+        long utcNowMillis = System.currentTimeMillis();
+        //time zone kathmandu : gmt
+        TimeZone currentTimeZone = TimeZone.getDefault();
+        //+ 5:45
+        long gmtOffsetMillis = currentTimeZone.getOffset(utcNowMillis);
+        //actual time
+        long timeSinceEpochLocalTimeMillis = utcNowMillis + gmtOffsetMillis;
+        //days
+        long daySinceEpochLocal = TimeUnit.MILLISECONDS.toDays(timeSinceEpochLocalTimeMillis);
+        // normalize = 00000
+        long normalizedUTCMidnightMillis = TimeUnit.DAYS.toMillis(daySinceEpochLocal);
+        return normalizedUTCMidnightMillis;
     }
 
     /**
