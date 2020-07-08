@@ -27,13 +27,14 @@ import android.widget.Toast;
 
 import com.example.trystromful.data.StormfulPreferences;
 import com.example.trystromful.data.WeatherContract;
+import com.example.trystromful.utilities.FakeDataUtils;
 import com.example.trystromful.utilities.NetworkUtils;
 import com.example.trystromful.utilities.OpenWeatherJsonUtils;
 import com.github.ybq.android.spinkit.SpinKitView;
 
 import java.net.URL;
 
-public class MainActivity extends AppCompatActivity implements ForecastAdapter.ForecastAdapterOnClickListener, LoaderManager.LoaderCallbacks<Cursor>, SharedPreferences.OnSharedPreferenceChangeListener {
+public class MainActivity extends AppCompatActivity implements ForecastAdapter.ForecastAdapterOnClickListener, LoaderManager.LoaderCallbacks<Cursor> {
 
     //views
     private RecyclerView mWeatherRecyclerView;
@@ -43,8 +44,8 @@ public class MainActivity extends AppCompatActivity implements ForecastAdapter.F
     private ForecastAdapter mForecastAdapter;
     private Context mContext = MainActivity.this;
 
-    // denote if shared preferences has been changed
-    private static boolean PREFERENCES_UPDATED = false;
+    //recycler view
+    private int mPosition = RecyclerView.NO_POSITION;
 
     //loader id
     private static final int FORECAST_LOADER_ID = 0;
@@ -72,6 +73,9 @@ public class MainActivity extends AppCompatActivity implements ForecastAdapter.F
         mErrorMessageDisplay = findViewById(R.id.tv_error_message_display);
         mLoadingIndicator = findViewById(R.id.pb_loading_indicator);
 
+
+        FakeDataUtils.insertFakeData(this);
+
         //layout manager
         LinearLayoutManager layoutManager = new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false);
         mWeatherRecyclerView.setLayoutManager(layoutManager);
@@ -80,41 +84,27 @@ public class MainActivity extends AppCompatActivity implements ForecastAdapter.F
         mForecastAdapter = new ForecastAdapter(this,this);
         mWeatherRecyclerView.setAdapter(mForecastAdapter);
 
+        //loading indicator
+        showLoading();
+
+        //loader manager
         getSupportLoaderManager().initLoader(FORECAST_LOADER_ID, null, this);
-        PreferenceManager.getDefaultSharedPreferences(this)
-                .registerOnSharedPreferenceChangeListener(this);
-    }
 
-
-  /*
-         -------------------------------- Shared Preferences  ----------------------------------------
-     */
-
-    @Override
-    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String s) {
-        PREFERENCES_UPDATED = true;
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        if (PREFERENCES_UPDATED) {
-            getSupportLoaderManager().restartLoader(FORECAST_LOADER_ID, null, this);
-            PREFERENCES_UPDATED = false;
-        }
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        PreferenceManager.getDefaultSharedPreferences(this).unregisterOnSharedPreferenceChangeListener(this);
     }
 
     /*
        -------------------------------- Loading UI  ----------------------------------------
      */
 
+    private void showLoading()
+    {
+        mWeatherRecyclerView.setVisibility(View.INVISIBLE);
+        mLoadingIndicator.setVisibility(View.VISIBLE);
+    }
+
+
     private void showWeatherDataView() {
+        mLoadingIndicator.setVisibility(View.INVISIBLE);
         mErrorMessageDisplay.setVisibility(View.INVISIBLE);
         mWeatherRecyclerView.setVisibility(View.VISIBLE);
     }
@@ -127,7 +117,9 @@ public class MainActivity extends AppCompatActivity implements ForecastAdapter.F
     @Override
     public void onClick(long dateInMillis) {
         Intent intent = new Intent(mContext, DetailActivity.class);
-        intent.putExtra(Intent.EXTRA_TEXT, dateInMillis);
+        //passing uri to the detail activity for a particular weather item
+        Uri uriForDetail = WeatherContract.WeatherEntry.buildWeatherUriWithDate(dateInMillis);
+        intent.setData(uriForDetail);
         startActivity(intent);
     }
 
@@ -160,6 +152,10 @@ public class MainActivity extends AppCompatActivity implements ForecastAdapter.F
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor weatherData) {
         mForecastAdapter.swapCursor(weatherData);
+        if(mPosition == RecyclerView.NO_POSITION)
+        {
+            mPosition =0;
+        }
         if (weatherData.getCount() != 0) {
             showWeatherDataView();
         }

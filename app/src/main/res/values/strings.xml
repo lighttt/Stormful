@@ -104,5 +104,29 @@
     <string name="condition_unknown">Unknown (<xliff:g id="conditionId">%1$d</xliff:g>)</string>
 
 
+    <!-- format humidity -->
+    <string name="format_humidity">
+        <xliff:g id="humidity">%1.0f</xliff:g> %%
+    </string>
+
+    <!-- format pressure -->
+    <string name="format_pressure">
+        <xliff:g id="pressure">%1.0f</xliff:g> hPa
+    </string>
+
+    <!-- format wind kmh-->
+    <string name="format_wind_kmh">
+        <xliff:g id="speed">%1.0f</xliff:g> km/h
+       <xliff:g id="direction">%2$s</xliff:g>
+    </string>
+
+
+    <!-- format wind -->
+    <string name="format_wind_mph">
+        <xliff:g id="speed">%1.0f</xliff:g> mph
+       <xliff:g id="direction">%2$s</xliff:g>
+    </string>
+
+
 
 </resources>
