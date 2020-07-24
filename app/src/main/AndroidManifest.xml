@@ -18,16 +18,28 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".SettingsActivity" />
-        <activity
-            android:name=".DetailActivity" />
+        <activity android:name=".SettingsActivity" />
+        <activity android:name=".DetailActivity" />
 
 
         <provider
             android:name=".data.WeatherProvider"
             android:authorities="@string/content_authority"
-            android:exported="false"/>
+            android:exported="false" />
+
+        <!--        normal background intent service-->
+        <service
+            android:name=".sync.StormfulSyncIntentService"
+            android:exported="false" />
+
+        <!--        firebase job dispatcher-->
+        <service
+            android:name=".sync.StormfulFirebaseJobService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.firebase.jobdispatcher.ACTION_EXECUTE" />
+            </intent-filter>
+        </service>
 
     </application>
 

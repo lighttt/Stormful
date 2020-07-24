@@ -2,6 +2,8 @@
     <string name="app_name">TryStromful</string>
 
 
+    <string name="content_authority">com.example.trystromful</string>
+
     <string name="error_message">An error occurred! Please try again.</string>
     <string name="action_refresh">Refresh</string>
 

@@ -27,6 +27,7 @@ import android.widget.Toast;
 
 import com.example.trystromful.data.StormfulPreferences;
 import com.example.trystromful.data.WeatherContract;
+import com.example.trystromful.sync.StormfulSyncUtils;
 import com.example.trystromful.utilities.FakeDataUtils;
 import com.example.trystromful.utilities.NetworkUtils;
 import com.example.trystromful.utilities.OpenWeatherJsonUtils;
@@ -74,7 +75,6 @@ public class MainActivity extends AppCompatActivity implements ForecastAdapter.F
         mLoadingIndicator = findViewById(R.id.pb_loading_indicator);
 
 
-        FakeDataUtils.insertFakeData(this);
 
         //layout manager
         LinearLayoutManager layoutManager = new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false);
@@ -89,6 +89,9 @@ public class MainActivity extends AppCompatActivity implements ForecastAdapter.F
 
         //loader manager
         getSupportLoaderManager().initLoader(FORECAST_LOADER_ID, null, this);
+
+        //get the data from our service
+        StormfulSyncUtils.initialize(this);
 
     }
 
@@ -208,5 +211,8 @@ public class MainActivity extends AppCompatActivity implements ForecastAdapter.F
             startActivity(intent);
         }
     }
+
+
+
 
 }

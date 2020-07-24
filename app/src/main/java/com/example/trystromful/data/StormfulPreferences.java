@@ -85,4 +85,21 @@ public class StormfulPreferences {
 
         return preferredCoordinates;
     }
+
+    /**
+     * Check whether our location has lat and long
+     */
+    public static boolean isLocationLatLonAvailable(Context context)
+    {
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
+        boolean spContainLat = sp.contains(PREF_COORD_LAT);
+        boolean spContainLong = sp.contains(PREF_COORD_LONG);
+
+        boolean spContainBothLatLong = false;
+        if(spContainLat && spContainLong)
+        {
+            spContainBothLatLong = true;
+        }
+        return spContainBothLatLong;
+    }
 }
