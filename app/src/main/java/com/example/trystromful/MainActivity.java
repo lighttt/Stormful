@@ -30,6 +30,7 @@ import com.example.trystromful.data.WeatherContract;
 import com.example.trystromful.sync.StormfulSyncUtils;
 import com.example.trystromful.utilities.FakeDataUtils;
 import com.example.trystromful.utilities.NetworkUtils;
+import com.example.trystromful.utilities.NotificationUtils;
 import com.example.trystromful.utilities.OpenWeatherJsonUtils;
 import com.github.ybq.android.spinkit.SpinKitView;
 
@@ -73,8 +74,6 @@ public class MainActivity extends AppCompatActivity implements ForecastAdapter.F
         mWeatherRecyclerView = findViewById(R.id.recyclerview_forecast);
         mErrorMessageDisplay = findViewById(R.id.tv_error_message_display);
         mLoadingIndicator = findViewById(R.id.pb_loading_indicator);
-
-
 
         //layout manager
         LinearLayoutManager layoutManager = new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false);
@@ -192,6 +191,10 @@ public class MainActivity extends AppCompatActivity implements ForecastAdapter.F
             startActivity(settings);
             return true;
         }
+        if (id == R.id.action_refresh) {
+            NotificationUtils.notifyUserOfNewWeather(mContext);
+            return true;
+        }
         return super.onOptionsItemSelected(item);
     }
 
@@ -211,8 +214,4 @@ public class MainActivity extends AppCompatActivity implements ForecastAdapter.F
             startActivity(intent);
         }
     }
-
-
-
-
 }

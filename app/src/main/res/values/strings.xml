@@ -45,6 +45,13 @@
     <string name="pref_location_label">Location</string>
     <string name="pref_location_key" translatable="false">location</string>
 
+    <string name="pref_enable_notification_key" translatable="false">enable_notifications</string>
+    <string name="pref_weather_notifications_label">Weather Notifications</string>
+    <string name="pref_notify_weather_enable">Enabled</string>
+    <string name="pref_notify_weather_disable">Disabled</string>
+
+    <string name="pref_last_notification">last_notification</string>
+
 
     <!-- Weather Conditions (From OpenWeatherMap) -->
     <string name="condition_2xx">Storm</string>
@@ -129,6 +136,12 @@
        <xliff:g id="direction">%2$s</xliff:g>
     </string>
 
+    <!-- format notification -->
+    <string name="format_notification">
+       Forecast:<xliff:g id="condition">%1$s</xliff:g> -
+       High:<xliff:g id="high">%2$s</xliff:g>
+       Low:<xliff:g id="low">%3$s</xliff:g>
+    </string>
 
 
 </resources>
