@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ShareCompat;
+import androidx.databinding.DataBindingUtil;
 import androidx.loader.app.LoaderManager;
 import androidx.loader.content.CursorLoader;
 import androidx.loader.content.Loader;
@@ -19,6 +20,7 @@ import android.widget.TextView;
 
 import com.example.trystromful.R;
 import com.example.trystromful.data.WeatherContract;
+import com.example.trystromful.databinding.ActivityDetailBinding;
 import com.example.trystromful.utilities.StormfulDateUtils;
 import com.example.trystromful.utilities.StormfulWeatherUtils;
 
@@ -28,14 +30,8 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
     private static final String FORECAST_SHARE_HASHTAG = " #Stormful";
     private String mForecastSummary;
 
-    //views
-    private TextView mDateView;
-    private TextView mDescriptionView;
-    private TextView mHighTempView;
-    private TextView mLowTempView;
-    private TextView mHumidityView;
-    private TextView mWindView;
-    private TextView mPressureView;
+    //data binding
+    private ActivityDetailBinding mDetailBinding;
 
     //uri
     private Uri mUri;
@@ -69,15 +65,10 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_detail);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        mDateView = findViewById(R.id.date);
-        mDescriptionView = findViewById(R.id.weather_description);
-        mHighTempView = findViewById(R.id.high_temperature);
-        mLowTempView = findViewById(R.id.low_temperature);
-        mHumidityView = findViewById(R.id.humidity);
-        mWindView = findViewById(R.id.wind);
-        mPressureView = findViewById(R.id.pressure);
+
+        //data binding
+        mDetailBinding = DataBindingUtil.setContentView(this,R.layout.activity_detail);
 
         // intent
         mUri = getIntent().getData();
@@ -141,44 +132,65 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
         }
         //get data from cursor using indexes
 
+        // ============= weather data setting ============
+
+        //icon
+        int weatherId = data.getInt(MainActivity.INDEX_WEATHER_CONDITION_ID);
+        int weatherIconImage = StormfulWeatherUtils.getSmallArtResourceIdForWeatherCondition(weatherId);
+        mDetailBinding.primaryInfo.weatherIcon.setImageResource(weatherIconImage);
+
+        //getting all columns values
         //date
-        long localDate = data.getLong(INDEX_WEATHER_DATE);
-        String dateText = StormfulDateUtils.getFriendlyDateString(this,localDate,true);
-        mDateView.setText(dateText);
+        long dateInMillis = data.getLong(MainActivity.INDEX_WEATHER_DATE);
+        String dateString = StormfulDateUtils.getFriendlyDateString(this, dateInMillis, false);
+        mDetailBinding.primaryInfo.date.setText(dateString);
 
-        //description from weather id
-        int weatherId = data.getInt(INDEX_WEATHER_CONDITION_ID);
-        String description  = StormfulWeatherUtils.getStringForWeatherCondition(this,weatherId);
-        mDescriptionView.setText(description);
+        //condition with accessibility
+        String description = StormfulWeatherUtils.getStringForWeatherCondition(this, weatherId);
+        String descriptionAlly = this.getString(R.string.ally_forecast,description);
+        mDetailBinding.primaryInfo.weatherDescription.setText(description);
+        mDetailBinding.primaryInfo.weatherDescription.setContentDescription(descriptionAlly);
 
-        //max temp
-        double highTemp = data.getDouble(INDEX_WEATHER_MAX_TEMP);
-        String highString = StormfulWeatherUtils.formatTemperature(this,highTemp);
-        mHighTempView.setText(highString);
+        //temperature
+        double highTemp = data.getDouble(MainActivity.INDEX_WEATHER_MAX_TEMP);
+        String highString = StormfulWeatherUtils.formatTemperature(this, highTemp);
+        String highAlly = this.getString(R.string.ally_high_temp,highString);
+        mDetailBinding.primaryInfo.highTemperature.setText(highString);
+        mDetailBinding.primaryInfo.highTemperature.setContentDescription(highAlly);
 
-        //min temp
-        double lowTemp = data.getDouble(INDEX_WEATHER_MIN_TEMP);
-        String lowString = StormfulWeatherUtils.formatTemperature(this,lowTemp);
-        mHighTempView.setText(lowString);
+        double lowTemp = data.getDouble(MainActivity.INDEX_WEATHER_MIN_TEMP);
+        String lowString = StormfulWeatherUtils.formatTemperature(this, lowTemp);
+        String lowAlly = this.getString(R.string.ally_low_temp,lowString);
+        mDetailBinding.primaryInfo.lowTemperature.setText(lowString);
+        mDetailBinding.primaryInfo.lowTemperature.setContentDescription(lowAlly);
 
         //humidity
         float humidity = data.getFloat(INDEX_WEATHER_HUMIDITY);
         String humidityString = getString(R.string.format_humidity,humidity);
-        mHumidityView.setText(humidityString);
+        String humidityAlly = getString(R.string.ally_humidity, humidityString);
+        mDetailBinding.extraDetails.humidity.setText(humidityString);
+        mDetailBinding.extraDetails.humidityLabel.setContentDescription(humidityAlly);
+        mDetailBinding.extraDetails.humidity.setContentDescription(humidityAlly);
 
         //pressure
         float pressure = data.getFloat(INDEX_WEATHER_PRESSURE);
         String pressureString = getString(R.string.format_pressure,pressure);
-        mHumidityView.setText(pressureString);
+        String pressureAlly = getString(R.string.ally_pressure, pressureString);
+        mDetailBinding.extraDetails.pressure.setText(pressureString);
+        mDetailBinding.extraDetails.pressureLabel.setContentDescription(pressureAlly);
+        mDetailBinding.extraDetails.pressure.setContentDescription(pressureAlly);
 
         //wind
         float windSpeed = data.getFloat(INDEX_WEATHER_WIND_SPEED);
         float windDirection = data.getFloat(INDEX_WEATHER_DEGREES);
         String windString = StormfulWeatherUtils.getFormattedWind(this,windSpeed,windDirection);
-        mWindView.setText(windString);
+        String windAlly = getString(R.string.ally_wind, windString);
+        mDetailBinding.extraDetails.wind.setContentDescription(windAlly);
+        mDetailBinding.extraDetails.windLabel.setContentDescription(windAlly);
+        mDetailBinding.extraDetails.wind.setText(windString);
 
         //summary for sharing intent
-        mForecastSummary = String.format("%s - %s - %s/%s",dateText,description,highString,lowString);
+        mForecastSummary = String.format("%s - %s - %s/%s",dateString,description,highString,lowString);
 
     }
 
