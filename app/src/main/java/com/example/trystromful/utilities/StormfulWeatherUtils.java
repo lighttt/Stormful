@@ -259,8 +259,6 @@ public class StormfulWeatherUtils {
 
     /**
      * Get the icons of the weather from their condition
-     * @param weatherId
-     * @return
      */
     public static int getLargeArtResourceIdForWeatherCondition(int weatherId) {
         /*

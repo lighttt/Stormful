@@ -192,7 +192,7 @@ public class MainActivity extends AppCompatActivity implements ForecastAdapter.F
             return true;
         }
         if (id == R.id.action_refresh) {
-            NotificationUtils.notifyUserOfNewWeather(mContext);
+            NotificationUtils.notifyUserOfNewWeather(getApplicationContext());
             return true;
         }
         return super.onOptionsItemSelected(item);

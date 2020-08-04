@@ -14,6 +14,7 @@ import android.net.Uri;
 import android.os.Build;
 
 import androidx.core.app.NotificationCompat;
+import androidx.core.app.TaskStackBuilder;
 import androidx.core.content.ContextCompat;
 
 import com.example.trystromful.DetailActivity;
@@ -66,15 +67,12 @@ public class NotificationUtils {
             Resources res = context.getResources();
             int largeIconResourceId = StormfulWeatherUtils.getLargeArtResourceIdForWeatherCondition(weatherId);
 
-            Bitmap largeIcon = BitmapFactory.decodeResource(res,R.drawable.ic_launcher_background);
+            Bitmap largeIcon = BitmapFactory.decodeResource(res,R.drawable.ic_baseline_desktop_mac_24);
 
             String notificationTitle = "Stormful";
             String notificationText =getNotificationText(context,weatherId,high,low);
 
             int smallIconResourceId = StormfulWeatherUtils.getSmallArtResourceIdForWeatherCondition(weatherId);
-
-            //content intent for going to detail
-            PendingIntent pendingIntent = contentIntent(context,todayWeatherUri);
 
             // make the notification
             NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
@@ -92,14 +90,24 @@ public class NotificationUtils {
 
             //notification
             NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(context)
-                    .setColor(ContextCompat.getColor(context,R.color.colorPrimary))
                     .setSmallIcon(smallIconResourceId)
                     .setLargeIcon(largeIcon)
+                    .setColor(ContextCompat.getColor(context,R.color.colorPrimary))
                     .setContentTitle(notificationTitle)
                     .setContentText(notificationText)
-                    .setContentIntent(pendingIntent)
                     .setDefaults(Notification.DEFAULT_VIBRATE | Notification.DEFAULT_SOUND)
                     .setAutoCancel(true);
+
+            //content intent for going to detail
+            Intent detailIntentForToday = new Intent(context, DetailActivity.class);
+            detailIntentForToday.setData(todayWeatherUri);
+
+            TaskStackBuilder taskStackBuilder = TaskStackBuilder.create(context);
+            taskStackBuilder.addNextIntentWithParentStack(detailIntentForToday);
+            PendingIntent resultPendingIntent = taskStackBuilder
+                    .getPendingIntent(456, PendingIntent.FLAG_UPDATE_CURRENT);
+
+            notificationBuilder.setContentIntent(resultPendingIntent);
 
             //use notification manager to show notification finally
             if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN
@@ -111,29 +119,10 @@ public class NotificationUtils {
 
             //save the last notification sent
             StormfulPreferences.saveLastNotificationTime(context,System.currentTimeMillis());
-
-            //always close cursor
-            todayWeatherCursor.close();
-
         }
+        //always close cursor
+        todayWeatherCursor.close();
     }
-
-
-    /**
-     * Its helps us to go to detailactivity from notification manager using pendingIntent
-     */
-    private static PendingIntent contentIntent(Context context,Uri todayWeatherUri)
-    {
-        //notification intent that goes to detail when click
-        Intent detailIntentToday = new Intent(context, DetailActivity.class);
-        detailIntentToday.setData(todayWeatherUri);
-
-        return PendingIntent.getActivity(context,
-                WEATHER_NOTIFICATION_PENDING_INTENT_ID,
-                detailIntentToday,
-                PendingIntent.FLAG_UPDATE_CURRENT);
-    }
-
 
     /**
      * Create a notification text to display
