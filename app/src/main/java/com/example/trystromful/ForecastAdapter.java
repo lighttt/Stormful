@@ -11,6 +11,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.trystromful.data.WeatherContract;
 import com.example.trystromful.utilities.StormfulDateUtils;
 import com.example.trystromful.utilities.StormfulWeatherUtils;
 

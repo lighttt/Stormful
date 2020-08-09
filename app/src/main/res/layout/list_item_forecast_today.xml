@@ -9,8 +9,9 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="16dp"
-        android:paddingBottom="16dp">
+        android:background="@color/colorPrimary"
+        android:paddingTop="@dimen/today_forecast_list_item_vertical_padding"
+        android:paddingBottom="@dimen/today_forecast_list_item_vertical_padding">
 
         <androidx.constraintlayout.widget.Guideline
             android:layout_width="wrap_content"
@@ -24,14 +25,17 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Today, April 2"
+            android:textColor="@color/white"
+            android:fontFamily="sans-serif"
             android:textSize="20sp"
+            android:layout_marginBottom="16dp"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintBottom_toTopOf="@id/weather_icon" />
 
         <ImageView
-            android:layout_width="96dp"
-            android:layout_height="96dp"
+            android:layout_width="@dimen/today_icon"
+            android:layout_height="@dimen/today_icon"
             android:id="@+id/weather_icon"
             android:adjustViewBounds="true"
             app:srcCompat="@drawable/art_clouds"
@@ -46,6 +50,7 @@
             android:layout_height="wrap_content"
             android:text="Rainy"
             android:textSize="20sp"
+            android:textColor="@color/white"
             app:layout_constraintLeft_toLeftOf="@id/weather_icon"
             app:layout_constraintRight_toRightOf="@id/weather_icon"
             app:layout_constraintTop_toBottomOf="@id/weather_icon"
@@ -57,6 +62,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="19\u00b0"
+            android:fontFamily="sans-serif-light"
+            android:textColor="@color/white"
             android:textSize="72sp"
             app:layout_constraintLeft_toLeftOf="@id/horizontal_middle"
             app:layout_constraintRight_toRightOf="parent"
@@ -70,6 +77,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="10\u00b0"
+            android:fontFamily="sans-serif-light"
+            android:textColor="@color/white"
             android:textSize="36sp"
             app:layout_constraintLeft_toLeftOf="@id/high_temperature"
             app:layout_constraintRight_toRightOf="@id/high_temperature"
