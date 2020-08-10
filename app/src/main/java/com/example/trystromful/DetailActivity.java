@@ -66,6 +66,8 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setElevation(0f);
+        getSupportActionBar().setTitle("");
 
         //data binding
         mDetailBinding = DataBindingUtil.setContentView(this,R.layout.activity_detail);

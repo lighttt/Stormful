@@ -71,6 +71,7 @@ public class MainActivity extends AppCompatActivity implements ForecastAdapter.F
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_forecast);
+        getSupportActionBar().setElevation(0f);
         mWeatherRecyclerView = findViewById(R.id.recyclerview_forecast);
         mErrorMessageDisplay = findViewById(R.id.tv_error_message_display);
         mLoadingIndicator = findViewById(R.id.pb_loading_indicator);

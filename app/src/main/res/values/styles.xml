@@ -11,7 +11,7 @@
 <!--    Main Activity ko style-->
     <style name="ActionBar.Solid.Stormful.NoTitle" parent="@style/Widget.AppCompat.Light.ActionBar.Solid.Inverse">
         <item name="displayOptions">useLogo|showHome</item>
-        <item name="logo">@drawable/ic_logo</item>
+        <item name="logo">@drawable/logo</item>
     </style>
 
     <style name="AppTheme.Forecast" parent="@style/AppTheme">
